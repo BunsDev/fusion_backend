@@ -1,0 +1,62 @@
+[
+  {
+    "chainId": 43113,
+    "chainName": "Avalanche Fuji",
+    "isBase": true,
+    "rpcUrl": "https://avalanche-fuji-c-chain-rpc.publicnode.com",
+    "baseGas": 120000,
+    "cautionGas": 15000,
+    "creditCost": 400000000000000,
+    "convert_id": "3408",
+    "id": "5805",
+    "creditPerTx": 0.03,
+    "addresses": {
+      "Fusion": "0x3ED5EccFFD1afE3172A9DEeDeD795b479f95a841",
+      "FusionForwarder": "0x1Baf9847E474b1B548545b92F5186097DB4E77B1",
+      "FactoryForwarder": "0x64d82895F0F60B35c28e567d7a576Bad8EBaf369",
+      "FusionProxyFactory": "0xf76B9F4D05189A968321AB9285fc66B0f3f76ab8",
+      "FusionVault": "0x3D00e49fCee24826fa677fadb2e0625293369972",
+      "FusionGasTank": "0x51781cc1439BD05a85185C8c8CEc979b263236e3"
+    },
+    "tokens": [
+      {
+        "name": "USDC",
+        "address": "0x5425890298aed601595a70AB815c96711a31Bc65",
+        "convert_id": "3408",
+        "id": "5805",
+        "decimals": 6,
+        "creditCost": 1000000
+      }
+    ]
+  },
+  {
+    "chainId": 80002,
+    "chainName": "Polygon Amoy",
+    "isBase": false,
+    "rpcUrl": "https://polygon-amoy-bor-rpc.publicnode.com",
+    "baseGas": 120000,
+    "cautionGas": 15000,
+    "creditCost": 400000000000000,
+    "convert_id": "3408",
+    "id": "3890",
+    "creditPerTx": 0.03,
+    "addresses": {
+      "Fusion": "0xd8c7f8D24d32C81641CBA0A294E35C22fcF38dFd",
+      "FusionForwarder": "0x843fE00Bec83abE55B5A2a02826b0B35e11f6d6d",
+      "FactoryForwarder": "0xd698Fe82145828a7e131699474667cC5D8fa5960",
+      "FusionProxyFactory": "0xc6A061d38e9Bd975e3d44980A92035e730125B70",
+      "FusionVault": "0x92A8952893e140d5c0f7d3dFbFd189FbBbF3A4FA",
+      "FusionGasTank": "0x51781cc1439BD05a85185C8c8CEc979b263236e3"
+    },
+    "tokens": [
+      {
+        "name": "USDC",
+        "address": "0x41E94Eb019C0762f9Bfcf9Fb1E58725BfB0e7582",
+        "convert_id": "3408",
+        "id": "3890",
+        "decimals": 6,
+        "creditCost": 1000000
+      }
+    ]
+  }
+]
