@@ -1,0 +1,11 @@
+{
+  "name": "Fusion",
+  "token": "GAS",
+  "chainId": 1146733,
+  "rpcUrl": "https://subnets.avacloud.io/f80441f0-eac0-4eee-bd5f-aeebadf6ce23",
+  "addresses": {
+    "Indexer": "0x2fAF5856C60C14730fd7594684C2C7d52097f440",
+    "IndexerProxyFactory": "0xc98e8e1939d1a36d3744bb5009F559Ee6A351C5b",
+    "BalanceHandler": "0x44e8D61d983AaC3571d3c5f69Af056492a83C11f"
+  }
+}

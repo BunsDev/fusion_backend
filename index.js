@@ -11,6 +11,8 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/api/deploy", require("./routes/api/deploy"));
+app.use("/api/execute", require("./routes/api/execute"));
+app.use("/api/executeBatch", require("./routes/api/executeBatch"));
 
 app.get("/", (req, res) => {
   res.send("API Running");
