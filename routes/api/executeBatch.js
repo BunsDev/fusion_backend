@@ -14,6 +14,7 @@ const {
   getGasEstimates,
   getGaslessEstimates,
 } = require("../../utils/contracts/executeBatch");
+const { getDomainBalance, withdrawFees } = require("../../utils/subchain");
 
 router.post("/native/:chainId", async (req, res) => {
   try {
@@ -536,7 +537,7 @@ router.post("/gasless/:domain/:chainId", async (req, res) => {
       });
     }
 
-    // have to check balance for domain here
+    const domainBalance = await getDomainBalance(domain);
 
     if (!domainBalance) {
       return res.json({
@@ -544,8 +545,6 @@ router.post("/gasless/:domain/:chainId", async (req, res) => {
         error: "Balance is 0",
       });
     }
-
-    const currentBalance = domainBalance.balance;
 
     const signer = new ethers.Wallet(process.env.PRIVATE_KEY, provider);
 
@@ -568,10 +567,7 @@ router.post("/gasless/:domain/:chainId", async (req, res) => {
       currentChain
     );
 
-    if (
-      currentBalance === 0 ||
-      currentBalance < Number(estimateFees) / 10 ** 18
-    ) {
+    if (domainBalance === 0 || domainBalance < Number(estimateFees)) {
       return res.json({
         success: false,
         error: "Insufficient balance for transaction",
@@ -666,7 +662,7 @@ router.post("/gasless/:domain/:chainId", async (req, res) => {
 
     const receipt = await signedTx.wait();
 
-    // have to deduct balance for domain here with Number(estimateFees) / 10 ** 18
+    await withdrawFees(domain, Number(estimateFees));
 
     res.json({ success: true, receipt });
   } catch (err) {

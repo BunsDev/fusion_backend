@@ -15,7 +15,7 @@ const getDomainBalance = async (domain) => {
 
   const domainBalance = await balanceHandler.checkBalance(domain);
 
-  return domainBalance / 10 ** 18;
+  return Number(domainBalance);
 };
 
 const depositAndIndex = async (domain, chainId, txHash) => {
@@ -62,7 +62,7 @@ const withdrawFees = async (domain, estimateFees) => {
 
   const data = balanceHandler.interface.encodeFunctionData("WithdrawFees", [
     domain,
-    Number(estimateFees * 10 ** 18).toFixed(0),
+    Number(estimateFees).toFixed(0),
   ]);
 
   const unSignedTx = {

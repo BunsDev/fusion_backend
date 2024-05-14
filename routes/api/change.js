@@ -9,11 +9,12 @@ const FusionProxyFactoryABI = require("../../lib/abi/FusionProxyFactory.json");
 const { verify_password } = require("../../utils/circuits/password_prove");
 const { verify_signature } = require("../../utils/circuits/signature_prove");
 const {
-  getGasEstimates,
-  verifyExecutePayload,
+  verifyChangeRecoveryPayload,
   getGasEstimatesErc20,
+  getGasEstimates,
   getGaslessEstimates,
-} = require("../../utils/contracts/execute");
+} = require("../../utils/contracts/change");
+
 const { getDomainBalance, withdrawFees } = require("../../utils/subchain");
 
 router.post("/native/:chainId", async (req, res) => {
@@ -71,7 +72,7 @@ router.post("/native/:chainId", async (req, res) => {
 
     const balance = Number(await provider.getBalance(forwardRequest.recipient));
 
-    if (balance < Number(estimateFees) + Number(forwardRequest.value)) {
+    if (balance < Number(estimateFees)) {
       return res.json({
         success: false,
         error: "Insufficient balance for transaction",
@@ -96,7 +97,14 @@ router.post("/native/:chainId", async (req, res) => {
     const nonce = await Fusion.getNonce();
     const messageHash = ethers.utils.hashMessage(nonce.toString());
 
-    const hash = await Fusion.TxHash();
+    const hash = await Fusion.RecoveryHash();
+
+    if (hash === forwardRequest.newRecoveryHash) {
+      return res.json({
+        success: false,
+        error: "RecoveryHash should not be the same as newRecoveryHash",
+      });
+    }
 
     if (mode === "password") {
       const isVerified = await verify_password(
@@ -122,7 +130,7 @@ router.post("/native/:chainId", async (req, res) => {
       }
     }
 
-    const data = forwarder.interface.encodeFunctionData("execute", [
+    const data = forwarder.interface.encodeFunctionData("changeRecovery", [
       forwardRequest,
       "0x0000000000000000000000000000000000000000",
       gasPrice.toString(),
@@ -130,7 +138,7 @@ router.post("/native/:chainId", async (req, res) => {
       estimateFees,
     ]);
 
-    const isSignatureValid = await verifyExecutePayload(
+    const isSignatureValid = await verifyChangeRecoveryPayload(
       forwardRequest,
       forwarder,
       currentChain
@@ -274,15 +282,6 @@ router.post("/erc20/:chainId", async (req, res) => {
       signer
     );
 
-    const balance = Number(await provider.getBalance(forwardRequest.recipient));
-
-    if (balance < Number(forwardRequest.value)) {
-      return res.json({
-        success: false,
-        error: "Insufficient balance for transaction",
-      });
-    }
-
     const {
       gasEstimate,
       gasPrice,
@@ -335,7 +334,14 @@ router.post("/erc20/:chainId", async (req, res) => {
     const nonce = await Fusion.getNonce();
     const messageHash = ethers.utils.hashMessage(nonce.toString());
 
-    const hash = await Fusion.TxHash();
+    const hash = await Fusion.RecoveryHash();
+
+    if (hash === forwardRequest.newRecoveryHash) {
+      return res.json({
+        success: false,
+        error: "RecoveryHash should not be the same as newRecoveryHash",
+      });
+    }
 
     if (mode === "password") {
       const isVerified = await verify_password(
@@ -361,7 +367,7 @@ router.post("/erc20/:chainId", async (req, res) => {
       }
     }
 
-    const data = forwarder.interface.encodeFunctionData("execute", [
+    const data = forwarder.interface.encodeFunctionData("changeRecovery", [
       forwardRequest,
       currentToken.address,
       gasPrice.toString(),
@@ -369,7 +375,7 @@ router.post("/erc20/:chainId", async (req, res) => {
       estimateFees,
     ]);
 
-    const isSignatureValid = await verifyExecutePayload(
+    const isSignatureValid = await verifyChangeRecoveryPayload(
       forwardRequest,
       forwarder,
       currentChain
@@ -557,15 +563,6 @@ router.post("/gasless/:domain/:chainId", async (req, res) => {
       });
     }
 
-    const balance = Number(await provider.getBalance(forwardRequest.recipient));
-
-    if (balance < Number(forwardRequest.value)) {
-      return res.json({
-        success: false,
-        error: "Insufficient balance for transaction",
-      });
-    }
-
     const Fusion = new ethers.Contract(
       forwardRequest.recipient,
       FusionABI,
@@ -584,7 +581,14 @@ router.post("/gasless/:domain/:chainId", async (req, res) => {
     const nonce = await Fusion.getNonce();
     const messageHash = ethers.utils.hashMessage(nonce.toString());
 
-    const hash = await Fusion.TxHash();
+    const hash = await Fusion.RecoveryHash();
+
+    if (hash === forwardRequest.newRecoveryHash) {
+      return res.json({
+        success: false,
+        error: "RecoveryHash should not be the same as newRecoveryHash",
+      });
+    }
 
     if (mode === "password") {
       const isVerified = await verify_password(
@@ -610,7 +614,7 @@ router.post("/gasless/:domain/:chainId", async (req, res) => {
       }
     }
 
-    const data = forwarder.interface.encodeFunctionData("execute", [
+    const data = forwarder.interface.encodeFunctionData("changeRecovery", [
       forwardRequest,
       "0x0000000000000000000000000000000000000000",
       "0",
@@ -618,7 +622,7 @@ router.post("/gasless/:domain/:chainId", async (req, res) => {
       "0",
     ]);
 
-    const isSignatureValid = await verifyExecutePayload(
+    const isSignatureValid = await verifyChangeRecoveryPayload(
       forwardRequest,
       forwarder,
       currentChain
@@ -640,7 +644,7 @@ router.post("/gasless/:domain/:chainId", async (req, res) => {
 
     const receipt = await signedTx.wait();
 
-    await withdrawFees(domain, Number(estimateFees));
+    await withdrawFees(domain, estimateFees);
 
     res.json({ success: true, receipt });
   } catch (err) {
