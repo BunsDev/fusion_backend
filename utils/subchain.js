@@ -18,7 +18,7 @@ const getDomainBalance = async (domain) => {
   return Number(domainBalance);
 };
 
-const depositAndIndex = async (domain, chainId, txHash) => {
+const depositAndIndex = async (domain, chainId, txHash, amount) => {
   const provider = new ethers.providers.JsonRpcProvider(subchain.rpcUrl);
 
   const balanceHandler = new ethers.Contract(
@@ -38,7 +38,7 @@ const depositAndIndex = async (domain, chainId, txHash) => {
   const unSignedTx = {
     to: subchain.addresses.BalanceHandler,
     data,
-    value: 0,
+    value: Number(amount * 10 ** 18).toFixed(0),
     gasLimit: 2000000,
   };
 
