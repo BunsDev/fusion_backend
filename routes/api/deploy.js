@@ -225,11 +225,13 @@ router.post("request/:chainId", async (req, res) => {
       });
     }
 
-    const { messageHash, hash } = await resolveHashAndNonce(
+    const { hash, baseFusionAddress } = await resolveHashAndNonce(
       baseFactory,
       chainDeployRequest,
       baseProvider
     );
+
+    const messageHash = ethers.utils.hashMessage("9999");
 
     let isVerified;
 
@@ -238,14 +240,14 @@ router.post("request/:chainId", async (req, res) => {
         messageHash,
         hash,
         chainDeployRequest.proof,
-        chainDeployRequest.address
+        baseFusionAddress
       );
     } else {
       isVerified = await verify_signature(
         messageHash,
         hash,
         chainDeployRequest.proof,
-        chainDeployRequest.address
+        baseFusionAddress
       );
     }
 
@@ -253,23 +255,23 @@ router.post("request/:chainId", async (req, res) => {
       return res.json({ success: false, error: "Proof is invalid" });
     }
 
-    const serverHash = await pedersen_hash(
-      ethers.utils.hexlify(ethers.utils.toUtf8Bytes(process.env.PASSCODE)),
-      ethers.utils.hexZeroPad(currentChain.chainId, 32)
-    );
+    // const serverHash = await pedersen_hash(
+    //   ethers.utils.hexlify(ethers.utils.toUtf8Bytes(process.env.PASSCODE)),
+    //   ethers.utils.hexZeroPad(currentChain.chainId, 32)
+    // );
 
-    const serverProof = await deploy_prove(
-      provider,
-      chainDeployRequest.domain,
-      serverHash,
-      currentChain.chainId
-    );
+    // const serverProof = await deploy_prove(
+    //   provider,
+    //   chainDeployRequest.domain,
+    //   serverHash,
+    //   currentChain.chainId
+    // );
 
     const receipt = await deployRequest(
       provider,
       currentChain,
       chainDeployRequest,
-      serverProof
+      chainDeployRequest.proof
     );
 
     res.json({ success: true, receipt });
@@ -421,9 +423,12 @@ router.get("/verify/:domain/:proof", async (req, res) => {
 
     const fusionContract = new ethers.Contract(fusion, FusionABI, provider);
 
-    const hash = ethers.utils.hashMessage("DEPLOY_REQUEST");
+    const hash = ethers.utils.hashMessage("9999");
 
-    const isVerified = await fusionContract.isValidSignature(hash, proof);
+    const isVerified = await fusionContract.isValidSignature(
+      hash,
+      proof.startsWith("0x") ? proof : `0x${proof}`
+    );
 
     if (isVerified) {
       return res.json({ success: true });

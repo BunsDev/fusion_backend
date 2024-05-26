@@ -81,6 +81,7 @@ const resolveHashAndNonce = async (
   return {
     messageHash,
     hash,
+    baseFusionAddress,
   };
 };
 
