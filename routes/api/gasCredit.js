@@ -53,7 +53,7 @@ router.post("/native/verify/:chainId", async (req, res) => {
     }
 
     // Check if transaction is already registered
-    const isTxRegisted = checkValidTx(tx, Number(chainId));
+    const isTxRegisted = await checkValidTx(tx, Number(chainId));
 
     if (isTxRegisted) {
       return res.json({
@@ -269,7 +269,7 @@ router.post("/erc20/verify/:chainId", async (req, res) => {
     }
 
     // Check if transaction is already registered
-    const isTxRegisted = checkValidTx(tx, Number(chainId));
+    const isTxRegisted = await checkValidTx(tx, Number(chainId));
 
     if (isTxRegisted) {
       return res.json({
@@ -392,12 +392,11 @@ router.post("/erc20/verify/:chainId", async (req, res) => {
       amount / currentToken.creditCost
     );
 
+    const senderBalance = await getDomainBalance(domain);
+
     return res.json({
       success: true,
-      senderBalance: {
-        domain: senderBalance.domain,
-        balance: senderBalance.balance,
-      },
+      senderBalance: Number(senderBalance),
     });
   } catch (err) {
     console.error(err);
