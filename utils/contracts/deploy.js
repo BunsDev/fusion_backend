@@ -178,70 +178,22 @@ const deployRequest = async (
 ) => {
   const signer = new ethers.Wallet(process.env.PRIVATE_KEY, provider);
 
-  const forwarderExternal = new ethers.Contract(
-    currentChain.addresses.FactoryForwarder,
-    FactoryForwarderABI,
+  const fusionProxyFactory = new ethers.Contract(
+    currentChain.addresses.FusionProxyFactory,
+    FusionProxyFactoryABI,
     signer
   );
 
-  const message = {
-    from: signer.address,
-    recipient: currentChain.addresses.FusionProxyFactory,
-    deadline: Number((Date.now() / 1000).toFixed(0)) + 2000,
-    nonce: Number(await forwarderExternal.nonces(signer.address)),
-    gas: 1000000,
-    domain: chainDeployRequest.domain,
-    initializer: chainDeployRequest.initializer,
-  };
-
-  const data712 = {
-    types: {
-      ForwardDeploy: [
-        { name: "from", type: "address" },
-        { name: "recipient", type: "address" },
-        { name: "deadline", type: "uint48" },
-        { name: "nonce", type: "uint256" },
-        { name: "gas", type: "uint256" },
-        { name: "domain", type: "string" },
-        { name: "initializer", type: "bytes" },
-      ],
-    },
-    domain: {
-      name: "Fusion Forwarder",
-      version: "1",
-      chainId: currentChain.chainId,
-      verifyingContract: currentChain.addresses.FactoryForwarder,
-    },
-    message: message,
-  };
-
-  const signature = await signer._signTypedData(
-    data712.domain,
-    data712.types,
-    data712.message
-  );
-
-  const forwardRequest = {
-    from: message.from,
-    recipient: message.recipient,
-    deadline: message.deadline,
-    gas: message.gas,
-    serverProof: message.serverProof,
-    domain: message.domain,
-    initializer: message.initializer,
-    signature: signature,
-  };
-
-  const data = forwarderExternal.interface.encodeFunctionData(
-    "executeWithRequest",
-    [serverProof, forwardRequest]
+  const data = fusionProxyFactory.interface.encodeFunctionData(
+    "createProxyWithRequest",
+    [serverProof, chainDeployRequest.domain, chainDeployRequest.initializer]
   );
 
   // Estimate Gas Price
   const gasPrice = Number(await provider.getGasPrice());
 
   const unSignedTx = {
-    to: currentChain.addresses.FactoryForwarder,
+    to: currentChain.addresses.FusionProxyFactory,
     data,
     value: 0,
     gasLimit: 2000000,

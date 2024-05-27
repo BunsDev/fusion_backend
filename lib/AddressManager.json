@@ -33,7 +33,7 @@
     "chainId": 80002,
     "chainName": "Polygon Amoy",
     "isBase": false,
-    "rpcUrl": "https://polygon-amoy-bor-rpc.publicnode.com",
+    "rpcUrl": "https://rpc.ankr.com/polygon_amoy",
     "baseGas": 120000,
     "cautionGas": 15000,
     "creditCost": 1370000000000000000,
@@ -43,8 +43,8 @@
     "addresses": {
       "Fusion": "0xd8c7f8D24d32C81641CBA0A294E35C22fcF38dFd",
       "FusionForwarder": "0x843fE00Bec83abE55B5A2a02826b0B35e11f6d6d",
-      "FactoryForwarder": "0xd698Fe82145828a7e131699474667cC5D8fa5960",
-      "FusionProxyFactory": "0xc6A061d38e9Bd975e3d44980A92035e730125B70",
+      "FactoryForwarder": "0x15335B81E1919E82bEc4Cde414Db53E57f103fDd",
+      "FusionProxyFactory": "0xA40d26b6598EE91939CB4871121051B528111417",
       "FusionVault": "0x92A8952893e140d5c0f7d3dFbFd189FbBbF3A4FA",
       "FusionGasTank": "0x51781cc1439BD05a85185C8c8CEc979b263236e3"
     },

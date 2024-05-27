@@ -40,6 +40,31 @@
     "inputs": [
       {
         "indexed": true,
+        "internalType": "string",
+        "name": "domain",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "bytes",
+        "name": "response",
+        "type": "bytes"
+      },
+      {
+        "indexed": false,
+        "internalType": "bytes",
+        "name": "error",
+        "type": "bytes"
+      }
+    ],
+    "name": "DomainRequestFulfilled",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
         "internalType": "address",
         "name": "from",
         "type": "address"
@@ -100,31 +125,6 @@
         "internalType": "bytes32",
         "name": "id",
         "type": "bytes32"
-      }
-    ],
-    "name": "RequestFulfilled",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "string",
-        "name": "domain",
-        "type": "string"
-      },
-      {
-        "indexed": false,
-        "internalType": "bytes",
-        "name": "response",
-        "type": "bytes"
-      },
-      {
-        "indexed": false,
-        "internalType": "bytes",
-        "name": "error",
-        "type": "bytes"
       }
     ],
     "name": "RequestFulfilled",
@@ -232,9 +232,9 @@
   {
     "inputs": [
       {
-        "internalType": "bytes",
+        "internalType": "string",
         "name": "baseProof",
-        "type": "bytes"
+        "type": "string"
       },
       {
         "internalType": "string",
@@ -288,30 +288,6 @@
     "name": "finalizeProxyWithRequest",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "string",
-        "name": "",
-        "type": "string"
-      }
-    ],
-    "name": "fulfilledRequests",
-    "outputs": [
-      {
-        "internalType": "bytes",
-        "name": "initializer",
-        "type": "bytes"
-      },
-      {
-        "internalType": "bool",
-        "name": "isRequestFulfilled",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -428,17 +404,36 @@
         "type": "bytes32"
       }
     ],
-    "name": "requests",
+    "name": "requestIds",
     "outputs": [
       {
         "internalType": "string",
-        "name": "domain",
+        "name": "",
         "type": "string"
-      },
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "name": "requests",
+    "outputs": [
       {
         "internalType": "bytes",
         "name": "initializer",
         "type": "bytes"
+      },
+      {
+        "internalType": "bool",
+        "name": "fulfilled",
+        "type": "bool"
       }
     ],
     "stateMutability": "view",

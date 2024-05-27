@@ -161,7 +161,7 @@ router.post("/:chainId", async (req, res) => {
   }
 });
 
-router.post("request/:chainId", async (req, res) => {
+router.post("/request/:chainId", async (req, res) => {
   try {
     const { chainId } = req.params;
 
