@@ -358,9 +358,9 @@ router.post("/finalize/:chainId/:domain", async (req, res) => {
       return res.json({ success: false, error: "Base chain cannot finalize" });
     }
 
-    const fulfilledRequest = await factory.fulfilledRequests(domain);
+    const request = await factory.requests(domain);
 
-    if (!fulfilledRequest || !fulfilledRequest.isRequestFulfilled) {
+    if (!request || !request.fulfilled) {
       return res.json({ success: false, error: "Request not fulfilled" });
     }
 
