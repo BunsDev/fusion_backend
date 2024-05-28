@@ -17,6 +17,7 @@ app.use("/api/recovery", require("./routes/api/recovery"));
 app.use("/api/change", require("./routes/api/change"));
 app.use("/api/gasCredit", require("./routes/api/gasCredit"));
 app.use("/api/public-conversion", require("./routes/api/public-conversion"));
+app.use("/api/transactions", require("./routes/api/transactions"));
 
 app.get("/", (req, res) => {
   res.send("API Running");

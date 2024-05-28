@@ -16,7 +16,9 @@
       "FactoryForwarder": "0x64d82895F0F60B35c28e567d7a576Bad8EBaf369",
       "FusionProxyFactory": "0xf76B9F4D05189A968321AB9285fc66B0f3f76ab8",
       "FusionVault": "0x3D00e49fCee24826fa677fadb2e0625293369972",
-      "FusionGasTank": "0x51781cc1439BD05a85185C8c8CEc979b263236e3"
+      "FusionGasTank": "0x51781cc1439BD05a85185C8c8CEc979b263236e3",
+      "PasswordVerifier": "0xADcCA523443cf9e9Cfda181872fB20D286C5ebBc",
+      "SignatureVerifier": "0xB78Df84CE1569C7b6432e2689EFa079494913E35"
     },
     "tokens": [
       {
@@ -26,8 +28,20 @@
         "id": "5805",
         "decimals": 6,
         "creditCost": 1000000
+      },
+      {
+        "name": "LINK",
+        "address": "0x0b9d5D9136855f6FEc3c0993feE6E9CE8a297846",
+        "convert_id": "1975",
+        "id": "5805",
+        "decimals": 18,
+        "creditCost": 53000000000000000
       }
-    ]
+    ],
+    "transactions": {
+      "apiUrl": "https://api.routescan.io/v2/network/testnet/evm/43113/etherscan/api",
+      "apiKey": "YourApiKeyToken"
+    }
   },
   {
     "chainId": 80002,
@@ -46,7 +60,9 @@
       "FactoryForwarder": "0x15335B81E1919E82bEc4Cde414Db53E57f103fDd",
       "FusionProxyFactory": "0xA40d26b6598EE91939CB4871121051B528111417",
       "FusionVault": "0x92A8952893e140d5c0f7d3dFbFd189FbBbF3A4FA",
-      "FusionGasTank": "0x51781cc1439BD05a85185C8c8CEc979b263236e3"
+      "FusionGasTank": "0x51781cc1439BD05a85185C8c8CEc979b263236e3",
+      "PasswordVerifier": "0x71637974910Be530f27EA485bE6fcda72999d56a",
+      "SignatureVerifier": "0x6013C3A2FFDFF761E71b27420cD675b2f9790C1D"
     },
     "tokens": [
       {
@@ -56,7 +72,19 @@
         "id": "3890",
         "decimals": 6,
         "creditCost": 1000000
+      },
+      {
+        "name": "LINK",
+        "address": "0x0Fd9e8d3aF1aaee056EB9e802c3A762a667b1904",
+        "convert_id": "1975",
+        "id": "3890",
+        "decimals": 18,
+        "creditCost": 53000000000000000
       }
-    ]
+    ],
+    "transactions": {
+      "apiUrl": "https://api-amoy.polygonscan.com/api",
+      "apiKey": "B66XTC9JBFDKZDANXSVSYK91INPIFW7KT5"
+    }
   }
 ]
