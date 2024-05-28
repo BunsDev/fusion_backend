@@ -79,10 +79,13 @@ router.get("/:chainId/:domain", async (req, res) => {
     });
 
     const sortedTx = filteredTx.sort(
-      (a, b) => new Date(b.timestamp) - new Date(a.timestamp)
+      (a, b) => Number(b.timeStamp) - Number(a.timeStamp)
     );
 
-    res.json(sortedTx);
+    res.json({
+      success: true,
+      transactions: sortedTx,
+    });
   } catch (error) {
     console.error(error);
     res.json({ success: false, error: error.message });
