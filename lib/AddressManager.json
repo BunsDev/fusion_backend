@@ -86,5 +86,93 @@
       "apiUrl": "https://api-amoy.polygonscan.com/api",
       "apiKey": "B66XTC9JBFDKZDANXSVSYK91INPIFW7KT5"
     }
+  },
+  {
+    "chainId": 84532,
+    "chainName": "Base",
+    "isBase": false,
+    "rpcUrl": "https://base-sepolia.blockpi.network/v1/rpc/public",
+    "baseGas": 0,
+    "cautionGas": 15000,
+    "creditCost": 400000000000000,
+    "convert_id": "3408",
+    "id": "1027",
+    "creditPerTx": 0.03,
+    "addresses": {
+      "Fusion": "0xf1E842Ef0774dBE7CaF7f0F95d1315fD834d2a4b",
+      "FusionForwarder": "0x2aa4c97688f340C8A2bDE2016b16dEFDC259834D",
+      "FactoryForwarder": "0x8487F6630510A00bFACd9Fe701700F193F52C04F",
+      "FusionProxyFactory": "0x2EF41EC23021bD5aBa53C6599D763e89A897Acad",
+      "FusionVault": "0x294d7bcC3A6eCB725aE877E4e9a520bEB50E802C",
+      "FusionGasTank": "0x51781cc1439BD05a85185C8c8CEc979b263236e3",
+      "PasswordVerifier": "0x44e8D61d983AaC3571d3c5f69Af056492a83C11f",
+      "SignatureVerifier": "0xc98e8e1939d1a36d3744bb5009F559Ee6A351C5b"
+    },
+    "tokens": [
+      {
+        "name": "USDC",
+        "address": "0x036CbD53842c5426634e7929541eC2318f3dCF7e",
+        "convert_id": "3408",
+        "id": "1027",
+        "decimals": 6,
+        "creditCost": 1000000
+      },
+      {
+        "name": "LINK",
+        "address": "0xe4ab69c077896252fafbd49efd26b5d171a32410",
+        "convert_id": "1975",
+        "id": "1027",
+        "decimals": 18,
+        "creditCost": 53000000000000000
+      }
+    ],
+    "transactions": {
+      "apiUrl": "https://api-sepolia.basescan.org/api",
+      "apiKey": "BZP99H9U5SEDZTTP3BIBUYE5X2TMM9PX5Q"
+    }
+  },
+  {
+    "chainId": 11155420,
+    "chainName": "Optimism",
+    "isBase": false,
+    "rpcUrl": "https://optimism-sepolia.drpc.org",
+    "baseGas": 0,
+    "cautionGas": 15000,
+    "creditCost": 400000000000000,
+    "convert_id": "3408",
+    "id": "1027",
+    "creditPerTx": 0.03,
+    "addresses": {
+      "Fusion": "0xF768fA09b378200811eE0CFe6DeD7B2E830202E5",
+      "FusionForwarder": "0x2020B832f19BCF6aC3ae8073Fe1C8e06140c2306",
+      "FactoryForwarder": "0xADcCA523443cf9e9Cfda181872fB20D286C5ebBc",
+      "FusionProxyFactory": "0x1FAd28Ec81C7e9DF883bf05aA1a42aBe4684904E",
+      "FusionVault": "0x8C76A41a3bF34624589f1fB59A42836C27Ad2a76",
+      "FusionGasTank": "0x51781cc1439BD05a85185C8c8CEc979b263236e3",
+      "PasswordVerifier": "0xfeE8519dA4D85ECa10d77735dcf1b89F44dE03b9",
+      "SignatureVerifier": "0xea8A2dD688F021A2d2FdA73124235e673E7A4BFc"
+    },
+    "tokens": [
+      {
+        "name": "USDC",
+        "address": "0x5fd84259d66Cd46123540766Be93DFE6D43130D7",
+        "convert_id": "3408",
+        "id": "1027",
+        "decimals": 6,
+        "creditCost": 1000000
+      },
+      {
+        "name": "LINK",
+        "address": "0xE4aB69C077896252FAFBD49EFD26B5D171A32410",
+        "convert_id": "1975",
+        "id": "1027",
+        "decimals": 18,
+        "creditCost": 53000000000000000
+      }
+    ],
+    "transactions": {
+      "apiUrl": "https://api-sepolia-optimistic.etherscan.io/api",
+      "apiKey": "89K6NC1QZIUZSA6A6S5SY1N3DVIBCJCD3A"
+    }
   }
 ]

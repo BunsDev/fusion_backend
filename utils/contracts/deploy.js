@@ -190,13 +190,20 @@ const deployRequest = async (
   );
 
   // Estimate Gas Price
-  // const gasPrice = Number(await provider.getGasPrice());
+  const gasPrice = Number(await provider.getGasPrice());
 
   const unSignedTx = {
     to: currentChain.addresses.FusionProxyFactory,
     data,
     value: 0,
-    gasLimit: 2000000,
+    gasLimit:
+      currentChain.chainId === 84532 || currentChain.chainId === 11155420
+        ? null
+        : 2000000,
+    gasPrice:
+      currentChain.chainId === 84532 || currentChain.chainId === 11155420
+        ? gasPrice
+        : null,
   };
 
   const signedTx = await signer.sendTransaction(unSignedTx);
