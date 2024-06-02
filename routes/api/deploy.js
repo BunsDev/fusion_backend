@@ -398,18 +398,39 @@ router.post("/finalize/:chainId/:domain", async (req, res) => {
   }
 });
 
-router.get("/verify/:domain/:proof", async (req, res) => {
+router.get("/verify/:domain/:chainId", async (req, res) => {
   try {
     const domain = req.params.domain;
-    const proof = req.params.proof;
+
+    const chainId = req.params.chainId;
 
     if (!domain) {
       return res.json({ success: false, error: "domain is required" });
     }
 
-    if (!proof) {
-      return res.json({ success: false, error: "proof is required" });
+    if (!chainId) {
+      return res.json({ success: false, error: "chainId is required" });
     }
+
+    const currentChain = addressManager.find(
+      (chain) => chain.chainId === Number(chainId)
+    );
+
+    if (!currentChain) {
+      return res.json({ success: false, error: "Chain not found" });
+    }
+
+    if (currentChain.isBase) {
+      return res.json({ success: false, error: "Base chain cannot verify" });
+    }
+
+    const sProvider = new ethers.providers.JsonRpcProvider(currentChain.rpcUrl);
+
+    const sFactory = new ethers.Contract(
+      currentChain.addresses.FusionProxyFactory,
+      FusionProxyFactoryABI,
+      sProvider
+    );
 
     const baseChain = addressManager.find((chain) => chain.isBase);
 
@@ -433,18 +454,49 @@ router.get("/verify/:domain/:proof", async (req, res) => {
 
     const fusionContract = new ethers.Contract(fusion, FusionABI, provider);
 
-    const hash = ethers.utils.hashMessage("9999");
+    const TxHash = await fusionContract.TxHash();
+    const RecoveryHash = await fusionContract.RecoveryHash();
+    const publicStorage = await fusionContract.PublicStorage();
 
-    const isVerified = await fusionContract.isValidSignature(
-      hash,
-      proof.startsWith("0x") ? proof : `0x${proof}`
-    );
+    const request = await sFactory.requests(domain);
 
-    if (isVerified) {
-      return res.json({ success: true });
-    } else {
-      return res.json({ success: false });
+    if (!request) {
+      return res.json({ success: false, error: "Request not found" });
     }
+
+    const initializer = request.initializer;
+
+    const data = fusionContract.interface.encodeFunctionData("setupFusion", [
+      ethers.utils.keccak256(
+        ethers.utils.toUtf8Bytes(domain?.toLowerCase() + ".fusion.id")
+      ),
+      currentChain.addresses.PasswordVerifier,
+      currentChain.addresses.SignatureVerifier,
+      currentChain.addresses.FusionForwarder,
+      currentChain.addresses.FusionGasTank,
+      TxHash,
+      RecoveryHash,
+      publicStorage,
+    ]);
+
+    if (initializer !== data) {
+      return res.json({ success: false, error: "Initializer mismatch" });
+    } else {
+      return res.json({ success: true });
+    }
+
+    // const hash = ethers.utils.hashMessage("9999");
+
+    // const isVerified = await fusionContract.isValidSignature(
+    //   hash,
+    //   proof.startsWith("0x") ? proof : `0x${proof}`
+    // );
+
+    // if (isVerified) {
+    //   return res.json({ success: true });
+    // } else {
+    //   return res.json({ success: false });
+    // }
   } catch (err) {
     return res.json({ success: false, error: err.message });
   }
